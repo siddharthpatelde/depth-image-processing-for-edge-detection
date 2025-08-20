@@ -1,0 +1,7 @@
+https://github.com/IntelRealSense/realsense-ros/issues/2361
+
+method 2:https://stackoverflow.com/questions/38094594/detect-approximately-objects-on-depth-map
+
+method 3: https://medium.com/@khanhson0811/boost-your-depth-image-edge-detection-with-this-modified-lbp-method-018cc59b9b35
+
+method 4: https://www.sciencedirect.com/science/article/pii/S2288430015300415

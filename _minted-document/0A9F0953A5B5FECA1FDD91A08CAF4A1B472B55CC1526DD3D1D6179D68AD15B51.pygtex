@@ -1,0 +1,45 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{c+ch}{\PYGZsh{}!/usr/bin/env python3}
+
+\PYG{k+kn}{import}\PYG{+w}{ }\PYG{n+nn}{rospy}
+\PYG{k+kn}{from}\PYG{+w}{ }\PYG{n+nn}{sensor\PYGZus{}msgs.msg}\PYG{+w}{ }\PYG{k+kn}{import} \PYG{n}{Image}
+\PYG{k+kn}{from}\PYG{+w}{ }\PYG{n+nn}{cv\PYGZus{}bridge}\PYG{+w}{ }\PYG{k+kn}{import} \PYG{n}{CvBridge}
+\PYG{k+kn}{import}\PYG{+w}{ }\PYG{n+nn}{cv2}
+
+\PYG{k}{class}\PYG{+w}{ }\PYG{n+nc}{FrameGrabber}\PYG{p}{:}
+    \PYG{k}{def}\PYG{+w}{ }\PYG{n+nf+fm}{\PYGZus{}\PYGZus{}init\PYGZus{}\PYGZus{}}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{p}{):}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{bridge} \PYG{o}{=} \PYG{n}{CvBridge}\PYG{p}{()}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{depth\PYGZus{}image\PYGZus{}original} \PYG{o}{=} \PYG{k+kc}{None}
+
+        \PYG{n}{rospy}\PYG{o}{.}\PYG{n}{Subscriber}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}/ascamera/depth0/image\PYGZus{}raw\PYGZdq{}}\PYG{p}{,} \PYG{n}{Image}\PYG{p}{,} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{depth\PYGZus{}callback}\PYG{p}{)}
+
+
+    \PYG{k}{def}\PYG{+w}{ }\PYG{n+nf}{depth\PYGZus{}callback}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{p}{,} \PYG{n}{msg}\PYG{p}{):}
+        \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{depth\PYGZus{}image\PYGZus{}original} \PYG{o}{=} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{bridge}\PYG{o}{.}\PYG{n}{imgmsg\PYGZus{}to\PYGZus{}cv2}\PYG{p}{(}\PYG{n}{msg}\PYG{p}{,} \PYG{n}{desired\PYGZus{}encoding}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}passthrough\PYGZdq{}}\PYG{p}{)}
+
+    \PYG{k}{def}\PYG{+w}{ }\PYG{n+nf}{show\PYGZus{}loop}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{p}{):}
+        \PYG{n}{rate} \PYG{o}{=} \PYG{n}{rospy}\PYG{o}{.}\PYG{n}{Rate}\PYG{p}{(}\PYG{l+m+mi}{30}\PYG{p}{)}
+        \PYG{k}{while} \PYG{o+ow}{not} \PYG{n}{rospy}\PYG{o}{.}\PYG{n}{is\PYGZus{}shutdown}\PYG{p}{():}
+            
+            \PYG{k}{if} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{depth\PYGZus{}image\PYGZus{}original} \PYG{o+ow}{is} \PYG{o+ow}{not} \PYG{k+kc}{None}\PYG{p}{:}
+                \PYG{n}{depth\PYGZus{}gray} \PYG{o}{=} \PYG{n}{cv2}\PYG{o}{.}\PYG{n}{normalize}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{depth\PYGZus{}image\PYGZus{}original}\PYG{p}{,} \PYG{k+kc}{None}\PYG{p}{,} \PYG{l+m+mi}{0}\PYG{p}{,} \PYG{l+m+mi}{255}\PYG{p}{,} \PYG{n}{cv2}\PYG{o}{.}\PYG{n}{NORM\PYGZus{}MINMAX}\PYG{p}{)}
+                \PYG{n}{depth\PYGZus{}gray} \PYG{o}{=} \PYG{n}{cv2}\PYG{o}{.}\PYG{n}{convertScaleAbs}\PYG{p}{(}\PYG{n}{depth\PYGZus{}gray}\PYG{p}{)}
+                \PYG{n}{depth\PYGZus{}colored} \PYG{o}{=} \PYG{n}{cv2}\PYG{o}{.}\PYG{n}{applyColorMap}\PYG{p}{(}\PYG{n}{depth\PYGZus{}gray}\PYG{p}{,} \PYG{n}{cv2}\PYG{o}{.}\PYG{n}{COLORMAP\PYGZus{}JET}\PYG{p}{)}
+                \PYG{n}{cv2}\PYG{o}{.}\PYG{n}{imshow}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}Depth Original\PYGZdq{}}\PYG{p}{,} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{depth\PYGZus{}image\PYGZus{}original}\PYG{p}{)}
+                \PYG{n}{cv2}\PYG{o}{.}\PYG{n}{imshow}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}Depth Gray\PYGZdq{}}\PYG{p}{,} \PYG{n}{depth\PYGZus{}gray}\PYG{p}{)}
+                \PYG{n}{cv2}\PYG{o}{.}\PYG{n}{imshow}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}Depth Colored\PYGZdq{}}\PYG{p}{,} \PYG{n}{depth\PYGZus{}colored}\PYG{p}{)}
+                
+            \PYG{n}{key} \PYG{o}{=} \PYG{n}{cv2}\PYG{o}{.}\PYG{n}{waitKey}\PYG{p}{(}\PYG{l+m+mi}{1}\PYG{p}{)} \PYG{o}{\PYGZam{}} \PYG{l+m+mh}{0xFF}
+            \PYG{k}{if} \PYG{n}{key} \PYG{o}{==} \PYG{n+nb}{ord}\PYG{p}{(}\PYG{l+s+s1}{\PYGZsq{}1\PYGZsq{}}\PYG{p}{):}
+                \PYG{n+nb}{print}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}Key \PYGZsq{}1\PYGZsq{} pressed. Exiting...\PYGZdq{}}\PYG{p}{)}
+                \PYG{k}{break}
+
+            \PYG{n}{rate}\PYG{o}{.}\PYG{n}{sleep}\PYG{p}{()}
+
+        \PYG{n}{cv2}\PYG{o}{.}\PYG{n}{destroyAllWindows}\PYG{p}{()}
+
+\PYG{k}{if} \PYG{n+nv+vm}{\PYGZus{}\PYGZus{}name\PYGZus{}\PYGZus{}} \PYG{o}{==} \PYG{l+s+s2}{\PYGZdq{}\PYGZus{}\PYGZus{}main\PYGZus{}\PYGZus{}\PYGZdq{}}\PYG{p}{:}
+    \PYG{n}{rospy}\PYG{o}{.}\PYG{n}{init\PYGZus{}node}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}rgb\PYGZus{}depth\PYGZus{}filters\PYGZus{}viewer\PYGZdq{}}\PYG{p}{)}
+    \PYG{n}{grabber} \PYG{o}{=} \PYG{n}{FrameGrabber}\PYG{p}{()}
+    \PYG{n}{grabber}\PYG{o}{.}\PYG{n}{show\PYGZus{}loop}\PYG{p}{()}
+\end{Verbatim}
