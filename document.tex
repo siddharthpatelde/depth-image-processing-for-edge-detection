@@ -222,7 +222,7 @@
 	\subsubsection*{Output (Gray Grid)}
 	\begin{figure}[H]
 		\centering
-		\includegraphics[width=\textwidth,height=0.9\textheight,keepaspectratio]{Images/04_average_gray_grid.png}
+		\includegraphics[width=\textwidth,height=0.9\textheight,keepaspectratio]{Images/blur/04_average_gray_grid.png}
 		\caption{Averaging — Gray grid result}
 	\end{figure}
 	\clearpage
@@ -230,7 +230,7 @@
 		\subsubsection*{Output (Colored Grid)}
 	\begin{figure}[H]
 		\centering
-		\includegraphics[width=\textwidth,height=0.9\textheight,keepaspectratio]{Images/04_average_colored_grid.png}
+		\includegraphics[width=\textwidth,height=0.9\textheight,keepaspectratio]{Images/blur/04_average_colored_grid.png}
 		\caption{Averaging — Colored grid result}
 	\end{figure}
 	\clearpage
@@ -248,7 +248,7 @@
 	\subsubsection*{Output (Gray Grid)}
 	\begin{figure}[H]
 		\centering
-		\includegraphics[width=\textwidth,height=0.9\textheight,keepaspectratio]{Images/05_gaussian_gray_grid.png}
+		\includegraphics[width=\textwidth,height=0.9\textheight,keepaspectratio]{Images/blur/05_gaussian_gray_grid.png}
 		\caption{Gaussian blurring — Gray grid result}
 	\end{figure}
 	\clearpage
@@ -256,7 +256,7 @@
 	\subsubsection*{Output (Colored Grid)}
 	\begin{figure}[H]
 		\centering
-		\includegraphics[width=\textwidth,height=0.9\textheight,keepaspectratio]{Images/05_gaussian_colored_grid.png}
+		\includegraphics[width=\textwidth,height=0.9\textheight,keepaspectratio]{Images/blur/05_gaussian_colored_grid.png}
 		\caption{Gaussian blurring — Colored grid result}
 	\end{figure}
 	\clearpage
@@ -276,7 +276,7 @@
 	\subsubsection*{Output (Gray Grid)}
 	\begin{figure}[H]
 		\centering
-		\includegraphics[width=\textwidth,height=0.9\textheight,keepaspectratio]{Images/06_median_gray_grid.png}
+		\includegraphics[width=\textwidth,height=0.9\textheight,keepaspectratio]{Images/blur/06_median_gray_grid.png}
 		\caption{Median blurring — Gray grid result}
 	\end{figure}
 	\clearpage
@@ -284,7 +284,7 @@
 	\subsubsection*{Output (Colored Grid)}
 	\begin{figure}[H]
 		\centering
-		\includegraphics[width=\textwidth,height=0.9\textheight,keepaspectratio]{Images/06_median_colored_grid.png}
+		\includegraphics[width=\textwidth,height=0.9\textheight,keepaspectratio]{Images/blur/06_median_colored_grid.png}
 		\caption{Median blurring — Colored grid result}
 	\end{figure}
 	\clearpage
@@ -299,7 +299,7 @@
 
 	\begin{figure}[H]
 		\centering
-		\includegraphics[width=\textwidth,height=0.9\textheight,keepaspectratio]{Images/07_bilateral_gray_grid.png}
+		\includegraphics[width=\textwidth,height=0.9\textheight,keepaspectratio]{Images/blur/07_bilateral_gray_grid.png}
 		\caption{Bilateral filtering — Gray grid result}
 	\end{figure}
 	\clearpage
@@ -307,7 +307,7 @@
 	\subsubsection*{Output (Colored Grid)}
 	\begin{figure}[H]
 		\centering
-		\includegraphics[width=\textwidth,height=0.9\textheight,keepaspectratio]{Images/07_bilateral_colored_grid.png}
+		\includegraphics[width=\textwidth,height=0.9\textheight,keepaspectratio]{Images/blur/07_bilateral_colored_grid.png}
 		\caption{Bilateral filtering — Colored grid result}
 	\end{figure}
 	
@@ -315,6 +315,9 @@
 
 
 \section{Canny Edge Detection on Blur }
+
+\subsubsection*{Code}
+\inputminted{python}{Python_Files/08_canny_on_blur.py}
 
 \PrintCannySeries{avg}
 \PrintCannySeries{gauss}

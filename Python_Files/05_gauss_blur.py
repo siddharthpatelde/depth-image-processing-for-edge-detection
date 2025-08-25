@@ -84,5 +84,5 @@ grid_colored = np.vstack([row1c, row2c, row3c, row4c, row5c, row6c, row7c])
 
 # cv2.destroyAllWindows()
 
-cv2.imwrite("images/05_gaussian_gray_grid.png", grid_gray)
-cv2.imwrite("images/05_gaussian_colored_grid.png", grid_colored)
+cv2.imwrite("images/blur/05_gaussian_gray_grid.png", grid_gray)
+cv2.imwrite("images/blur/05_gaussian_colored_grid.png", grid_colored)

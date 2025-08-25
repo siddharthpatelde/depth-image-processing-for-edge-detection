@@ -1,0 +1,30 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{k+kn}{import}\PYG{+w}{ }\PYG{n+nn}{cv2}\PYG{o}{,}\PYG{+w}{ }\PYG{n+nn}{os}
+
+\PYG{c+c1}{\PYGZsh{} inputs (gray grids you already saved)}
+\PYG{n}{base} \PYG{o}{=} \PYG{l+s+s2}{\PYGZdq{}images\PYGZdq{}}
+\PYG{n}{inputs} \PYG{o}{=} \PYG{p}{[}
+    \PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}blur/04\PYGZus{}average\PYGZus{}gray\PYGZus{}grid.png\PYGZdq{}}\PYG{p}{,}  \PYG{l+s+s2}{\PYGZdq{}avg\PYGZdq{}}\PYG{p}{),}
+    \PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}blur/05\PYGZus{}gaussian\PYGZus{}gray\PYGZus{}grid.png\PYGZdq{}}\PYG{p}{,} \PYG{l+s+s2}{\PYGZdq{}gauss\PYGZdq{}}\PYG{p}{),}
+    \PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}blur/06\PYGZus{}median\PYGZus{}gray\PYGZus{}grid.png\PYGZdq{}}\PYG{p}{,}   \PYG{l+s+s2}{\PYGZdq{}median\PYGZdq{}}\PYG{p}{),}
+    \PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}blur/07\PYGZus{}bilateral\PYGZus{}gray\PYGZus{}grid.png\PYGZdq{}}\PYG{p}{,}\PYG{l+s+s2}{\PYGZdq{}bilateral\PYGZdq{}}\PYG{p}{),}
+\PYG{p}{]}
+
+\PYG{c+c1}{\PYGZsh{} output folder}
+\PYG{n}{out\PYGZus{}dir} \PYG{o}{=} \PYG{n}{os}\PYG{o}{.}\PYG{n}{path}\PYG{o}{.}\PYG{n}{join}\PYG{p}{(}\PYG{n}{base}\PYG{p}{,} \PYG{l+s+s2}{\PYGZdq{}canny\PYGZus{}on\PYGZus{}gray\PYGZdq{}}\PYG{p}{)}
+\PYG{n}{os}\PYG{o}{.}\PYG{n}{makedirs}\PYG{p}{(}\PYG{n}{out\PYGZus{}dir}\PYG{p}{,} \PYG{n}{exist\PYGZus{}ok}\PYG{o}{=}\PYG{k+kc}{True}\PYG{p}{)}
+
+\PYG{c+c1}{\PYGZsh{} 21 Canny settings: (low, high) = (t, 3t) for t = 10..210}
+\PYG{n}{thresholds} \PYG{o}{=} \PYG{n+nb}{list}\PYG{p}{(}\PYG{n+nb}{range}\PYG{p}{(}\PYG{l+m+mi}{10}\PYG{p}{,} \PYG{l+m+mi}{211}\PYG{p}{,} \PYG{l+m+mi}{10}\PYG{p}{))}  \PYG{c+c1}{\PYGZsh{} 10,20,...,210  → 21 combos}
+
+\PYG{k}{for} \PYG{n}{fname}\PYG{p}{,} \PYG{n}{tag} \PYG{o+ow}{in} \PYG{n}{inputs}\PYG{p}{:}
+    \PYG{n}{img} \PYG{o}{=} \PYG{n}{cv2}\PYG{o}{.}\PYG{n}{imread}\PYG{p}{(}\PYG{n}{os}\PYG{o}{.}\PYG{n}{path}\PYG{o}{.}\PYG{n}{join}\PYG{p}{(}\PYG{n}{base}\PYG{p}{,} \PYG{n}{fname}\PYG{p}{),} \PYG{n}{cv2}\PYG{o}{.}\PYG{n}{IMREAD\PYGZus{}GRAYSCALE}\PYG{p}{)}
+    \PYG{k}{if} \PYG{n}{img} \PYG{o+ow}{is} \PYG{k+kc}{None}\PYG{p}{:}
+        \PYG{n+nb}{print}\PYG{p}{(}\PYG{l+s+sa}{f}\PYG{l+s+s2}{\PYGZdq{}Skipped (not found): }\PYG{l+s+si}{\PYGZob{}}\PYG{n}{fname}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{)}
+        \PYG{k}{continue}
+    \PYG{k}{for} \PYG{n}{idx}\PYG{p}{,} \PYG{n}{t} \PYG{o+ow}{in} \PYG{n+nb}{enumerate}\PYG{p}{(}\PYG{n}{thresholds}\PYG{p}{,} \PYG{l+m+mi}{1}\PYG{p}{):}
+        \PYG{n}{edges} \PYG{o}{=} \PYG{n}{cv2}\PYG{o}{.}\PYG{n}{Canny}\PYG{p}{(}\PYG{n}{img}\PYG{p}{,} \PYG{n}{t}\PYG{p}{,} \PYG{l+m+mi}{3}\PYG{o}{*}\PYG{n}{t}\PYG{p}{,} \PYG{n}{apertureSize}\PYG{o}{=}\PYG{l+m+mi}{3}\PYG{p}{,} \PYG{n}{L2gradient}\PYG{o}{=}\PYG{k+kc}{False}\PYG{p}{)}
+        \PYG{n}{out} \PYG{o}{=} \PYG{n}{os}\PYG{o}{.}\PYG{n}{path}\PYG{o}{.}\PYG{n}{join}\PYG{p}{(}\PYG{n}{out\PYGZus{}dir}\PYG{p}{,} \PYG{l+s+sa}{f}\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+si}{\PYGZob{}}\PYG{n}{tag}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s+s2}{\PYGZus{}}\PYG{l+s+si}{\PYGZob{}}\PYG{n}{idx}\PYG{l+s+si}{:}\PYG{l+s+s2}{02d}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s+s2}{\PYGZus{}canny\PYGZus{}}\PYG{l+s+si}{\PYGZob{}}\PYG{n}{t}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s+s2}{\PYGZus{}}\PYG{l+s+si}{\PYGZob{}}\PYG{l+m+mi}{3}\PYG{o}{*}\PYG{n}{t}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s+s2}{.png\PYGZdq{}}\PYG{p}{)}
+        \PYG{n}{cv2}\PYG{o}{.}\PYG{n}{imwrite}\PYG{p}{(}\PYG{n}{out}\PYG{p}{,} \PYG{n}{edges}\PYG{p}{)}
+
+\end{Verbatim}

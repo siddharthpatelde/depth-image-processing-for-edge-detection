@@ -3,10 +3,10 @@ import cv2, os
 # inputs (gray grids you already saved)
 base = "images"
 inputs = [
-    ("04_average_gray_grid.png",  "avg"),
-    ("05_gaussian_gray_grid.png", "gauss"),
-    ("06_median_gray_grid.png",   "median"),
-    ("07_bilateral_gray_grid.png","bilateral"),
+    ("blur/04_average_gray_grid.png",  "avg"),
+    ("blur/05_gaussian_gray_grid.png", "gauss"),
+    ("blur/06_median_gray_grid.png",   "median"),
+    ("blur/07_bilateral_gray_grid.png","bilateral"),
 ]
 
 # output folder

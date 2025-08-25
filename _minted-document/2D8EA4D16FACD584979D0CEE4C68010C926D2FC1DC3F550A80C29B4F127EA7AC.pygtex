@@ -1,0 +1,92 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{k+kn}{import}\PYG{+w}{ }\PYG{n+nn}{cv2}
+\PYG{k+kn}{import}\PYG{+w}{ }\PYG{n+nn}{numpy}\PYG{+w}{ }\PYG{k}{as}\PYG{+w}{ }\PYG{n+nn}{np}
+
+
+\PYG{n}{depth\PYGZus{}gray} \PYG{o}{=} \PYG{n}{cv2}\PYG{o}{.}\PYG{n}{imread}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}images/depth\PYGZus{}gray.png\PYGZdq{}}\PYG{p}{,} \PYG{n}{cv2}\PYG{o}{.}\PYG{n}{IMREAD\PYGZus{}GRAYSCALE}\PYG{p}{)}
+
+\PYG{n}{depth\PYGZus{}colored} \PYG{o}{=} \PYG{n}{cv2}\PYG{o}{.}\PYG{n}{applyColorMap}\PYG{p}{(}\PYG{n}{depth\PYGZus{}gray}\PYG{p}{,} \PYG{n}{cv2}\PYG{o}{.}\PYG{n}{COLORMAP\PYGZus{}JET}\PYG{p}{)}
+
+\PYG{c+c1}{\PYGZsh{} grayscale sequence}
+\PYG{n}{g1}  \PYG{o}{=} \PYG{n}{depth\PYGZus{}gray}
+\PYG{n}{g2}  \PYG{o}{=} \PYG{n}{cv2}\PYG{o}{.}\PYG{n}{bilateralFilter}\PYG{p}{(}\PYG{n}{depth\PYGZus{}gray}\PYG{p}{,} \PYG{l+m+mi}{3}\PYG{p}{,} \PYG{l+m+mi}{75}\PYG{p}{,} \PYG{l+m+mi}{75}\PYG{p}{)}
+\PYG{n}{g3}  \PYG{o}{=} \PYG{n}{cv2}\PYG{o}{.}\PYG{n}{bilateralFilter}\PYG{p}{(}\PYG{n}{depth\PYGZus{}gray}\PYG{p}{,} \PYG{l+m+mi}{5}\PYG{p}{,} \PYG{l+m+mi}{75}\PYG{p}{,} \PYG{l+m+mi}{75}\PYG{p}{)}
+\PYG{n}{g4}  \PYG{o}{=} \PYG{n}{cv2}\PYG{o}{.}\PYG{n}{bilateralFilter}\PYG{p}{(}\PYG{n}{depth\PYGZus{}gray}\PYG{p}{,} \PYG{l+m+mi}{7}\PYG{p}{,} \PYG{l+m+mi}{75}\PYG{p}{,} \PYG{l+m+mi}{75}\PYG{p}{)}
+\PYG{n}{g5}  \PYG{o}{=} \PYG{n}{cv2}\PYG{o}{.}\PYG{n}{bilateralFilter}\PYG{p}{(}\PYG{n}{depth\PYGZus{}gray}\PYG{p}{,} \PYG{l+m+mi}{9}\PYG{p}{,} \PYG{l+m+mi}{75}\PYG{p}{,} \PYG{l+m+mi}{75}\PYG{p}{)}
+\PYG{n}{g6}  \PYG{o}{=} \PYG{n}{cv2}\PYG{o}{.}\PYG{n}{bilateralFilter}\PYG{p}{(}\PYG{n}{depth\PYGZus{}gray}\PYG{p}{,} \PYG{l+m+mi}{11}\PYG{p}{,} \PYG{l+m+mi}{75}\PYG{p}{,} \PYG{l+m+mi}{75}\PYG{p}{)}
+\PYG{n}{g7}  \PYG{o}{=} \PYG{n}{cv2}\PYG{o}{.}\PYG{n}{bilateralFilter}\PYG{p}{(}\PYG{n}{depth\PYGZus{}gray}\PYG{p}{,} \PYG{l+m+mi}{13}\PYG{p}{,} \PYG{l+m+mi}{75}\PYG{p}{,} \PYG{l+m+mi}{75}\PYG{p}{)}
+\PYG{n}{g8}  \PYG{o}{=} \PYG{n}{cv2}\PYG{o}{.}\PYG{n}{bilateralFilter}\PYG{p}{(}\PYG{n}{depth\PYGZus{}gray}\PYG{p}{,} \PYG{l+m+mi}{15}\PYG{p}{,} \PYG{l+m+mi}{75}\PYG{p}{,} \PYG{l+m+mi}{75}\PYG{p}{)}
+\PYG{n}{g9}  \PYG{o}{=} \PYG{n}{cv2}\PYG{o}{.}\PYG{n}{bilateralFilter}\PYG{p}{(}\PYG{n}{depth\PYGZus{}gray}\PYG{p}{,} \PYG{l+m+mi}{17}\PYG{p}{,} \PYG{l+m+mi}{75}\PYG{p}{,} \PYG{l+m+mi}{75}\PYG{p}{)}
+\PYG{n}{g10} \PYG{o}{=} \PYG{n}{cv2}\PYG{o}{.}\PYG{n}{bilateralFilter}\PYG{p}{(}\PYG{n}{depth\PYGZus{}gray}\PYG{p}{,} \PYG{l+m+mi}{19}\PYG{p}{,} \PYG{l+m+mi}{75}\PYG{p}{,} \PYG{l+m+mi}{75}\PYG{p}{)}
+\PYG{n}{g11} \PYG{o}{=} \PYG{n}{cv2}\PYG{o}{.}\PYG{n}{bilateralFilter}\PYG{p}{(}\PYG{n}{depth\PYGZus{}gray}\PYG{p}{,} \PYG{l+m+mi}{21}\PYG{p}{,} \PYG{l+m+mi}{75}\PYG{p}{,} \PYG{l+m+mi}{75}\PYG{p}{)}
+\PYG{n}{g12} \PYG{o}{=} \PYG{n}{cv2}\PYG{o}{.}\PYG{n}{bilateralFilter}\PYG{p}{(}\PYG{n}{depth\PYGZus{}gray}\PYG{p}{,} \PYG{l+m+mi}{23}\PYG{p}{,} \PYG{l+m+mi}{75}\PYG{p}{,} \PYG{l+m+mi}{75}\PYG{p}{)}
+\PYG{n}{g13} \PYG{o}{=} \PYG{n}{cv2}\PYG{o}{.}\PYG{n}{bilateralFilter}\PYG{p}{(}\PYG{n}{depth\PYGZus{}gray}\PYG{p}{,} \PYG{l+m+mi}{25}\PYG{p}{,} \PYG{l+m+mi}{75}\PYG{p}{,} \PYG{l+m+mi}{75}\PYG{p}{)}
+\PYG{n}{g14} \PYG{o}{=} \PYG{n}{cv2}\PYG{o}{.}\PYG{n}{bilateralFilter}\PYG{p}{(}\PYG{n}{depth\PYGZus{}gray}\PYG{p}{,} \PYG{l+m+mi}{27}\PYG{p}{,} \PYG{l+m+mi}{75}\PYG{p}{,} \PYG{l+m+mi}{75}\PYG{p}{)}
+\PYG{n}{g15} \PYG{o}{=} \PYG{n}{cv2}\PYG{o}{.}\PYG{n}{bilateralFilter}\PYG{p}{(}\PYG{n}{depth\PYGZus{}gray}\PYG{p}{,} \PYG{l+m+mi}{29}\PYG{p}{,} \PYG{l+m+mi}{75}\PYG{p}{,} \PYG{l+m+mi}{75}\PYG{p}{)}
+\PYG{n}{g16} \PYG{o}{=} \PYG{n}{cv2}\PYG{o}{.}\PYG{n}{bilateralFilter}\PYG{p}{(}\PYG{n}{depth\PYGZus{}gray}\PYG{p}{,} \PYG{l+m+mi}{31}\PYG{p}{,} \PYG{l+m+mi}{75}\PYG{p}{,} \PYG{l+m+mi}{75}\PYG{p}{)}
+\PYG{n}{g17} \PYG{o}{=} \PYG{n}{cv2}\PYG{o}{.}\PYG{n}{bilateralFilter}\PYG{p}{(}\PYG{n}{depth\PYGZus{}gray}\PYG{p}{,} \PYG{l+m+mi}{33}\PYG{p}{,} \PYG{l+m+mi}{75}\PYG{p}{,} \PYG{l+m+mi}{75}\PYG{p}{)}
+\PYG{n}{g18} \PYG{o}{=} \PYG{n}{cv2}\PYG{o}{.}\PYG{n}{bilateralFilter}\PYG{p}{(}\PYG{n}{depth\PYGZus{}gray}\PYG{p}{,} \PYG{l+m+mi}{35}\PYG{p}{,} \PYG{l+m+mi}{75}\PYG{p}{,} \PYG{l+m+mi}{75}\PYG{p}{)}
+\PYG{n}{g19} \PYG{o}{=} \PYG{n}{cv2}\PYG{o}{.}\PYG{n}{bilateralFilter}\PYG{p}{(}\PYG{n}{depth\PYGZus{}gray}\PYG{p}{,} \PYG{l+m+mi}{37}\PYG{p}{,} \PYG{l+m+mi}{75}\PYG{p}{,} \PYG{l+m+mi}{75}\PYG{p}{)}
+\PYG{n}{g20} \PYG{o}{=} \PYG{n}{cv2}\PYG{o}{.}\PYG{n}{bilateralFilter}\PYG{p}{(}\PYG{n}{depth\PYGZus{}gray}\PYG{p}{,} \PYG{l+m+mi}{39}\PYG{p}{,} \PYG{l+m+mi}{75}\PYG{p}{,} \PYG{l+m+mi}{75}\PYG{p}{)}
+\PYG{n}{g21} \PYG{o}{=} \PYG{n}{cv2}\PYG{o}{.}\PYG{n}{bilateralFilter}\PYG{p}{(}\PYG{n}{depth\PYGZus{}gray}\PYG{p}{,} \PYG{l+m+mi}{41}\PYG{p}{,} \PYG{l+m+mi}{75}\PYG{p}{,} \PYG{l+m+mi}{75}\PYG{p}{)}
+
+
+
+\PYG{c+c1}{\PYGZsh{} build 7×3 grid}
+\PYG{n}{row1} \PYG{o}{=} \PYG{n}{np}\PYG{o}{.}\PYG{n}{hstack}\PYG{p}{([}\PYG{n}{g1}\PYG{p}{,} \PYG{n}{g2}\PYG{p}{,} \PYG{n}{g3}\PYG{p}{])}
+\PYG{n}{row2} \PYG{o}{=} \PYG{n}{np}\PYG{o}{.}\PYG{n}{hstack}\PYG{p}{([}\PYG{n}{g4}\PYG{p}{,} \PYG{n}{g5}\PYG{p}{,} \PYG{n}{g6}\PYG{p}{])}
+\PYG{n}{row3} \PYG{o}{=} \PYG{n}{np}\PYG{o}{.}\PYG{n}{hstack}\PYG{p}{([}\PYG{n}{g7}\PYG{p}{,} \PYG{n}{g8}\PYG{p}{,} \PYG{n}{g9}\PYG{p}{])}
+\PYG{n}{row4} \PYG{o}{=} \PYG{n}{np}\PYG{o}{.}\PYG{n}{hstack}\PYG{p}{([}\PYG{n}{g10}\PYG{p}{,} \PYG{n}{g11}\PYG{p}{,} \PYG{n}{g12}\PYG{p}{])}
+\PYG{n}{row5} \PYG{o}{=} \PYG{n}{np}\PYG{o}{.}\PYG{n}{hstack}\PYG{p}{([}\PYG{n}{g13}\PYG{p}{,} \PYG{n}{g14}\PYG{p}{,} \PYG{n}{g15}\PYG{p}{])}
+\PYG{n}{row6} \PYG{o}{=} \PYG{n}{np}\PYG{o}{.}\PYG{n}{hstack}\PYG{p}{([}\PYG{n}{g16}\PYG{p}{,} \PYG{n}{g17}\PYG{p}{,} \PYG{n}{g18}\PYG{p}{])}
+\PYG{n}{row7} \PYG{o}{=} \PYG{n}{np}\PYG{o}{.}\PYG{n}{hstack}\PYG{p}{([}\PYG{n}{g19}\PYG{p}{,} \PYG{n}{g20}\PYG{p}{,} \PYG{n}{g21}\PYG{p}{])}
+
+\PYG{n}{grid\PYGZus{}gray} \PYG{o}{=} \PYG{n}{np}\PYG{o}{.}\PYG{n}{vstack}\PYG{p}{([}\PYG{n}{row1}\PYG{p}{,} \PYG{n}{row2}\PYG{p}{,} \PYG{n}{row3}\PYG{p}{,} \PYG{n}{row4}\PYG{p}{,} \PYG{n}{row5}\PYG{p}{,} \PYG{n}{row6}\PYG{p}{,} \PYG{n}{row7}\PYG{p}{])}
+
+\PYG{c+c1}{\PYGZsh{} colored sequence}
+\PYG{n}{c1}  \PYG{o}{=} \PYG{n}{depth\PYGZus{}colored}
+\PYG{n}{c2}  \PYG{o}{=} \PYG{n}{cv2}\PYG{o}{.}\PYG{n}{bilateralFilter}\PYG{p}{(}\PYG{n}{depth\PYGZus{}colored}\PYG{p}{,} \PYG{l+m+mi}{3}\PYG{p}{,} \PYG{l+m+mi}{75}\PYG{p}{,} \PYG{l+m+mi}{75}\PYG{p}{)}
+\PYG{n}{c3}  \PYG{o}{=} \PYG{n}{cv2}\PYG{o}{.}\PYG{n}{bilateralFilter}\PYG{p}{(}\PYG{n}{depth\PYGZus{}colored}\PYG{p}{,} \PYG{l+m+mi}{5}\PYG{p}{,} \PYG{l+m+mi}{75}\PYG{p}{,} \PYG{l+m+mi}{75}\PYG{p}{)}
+\PYG{n}{c4}  \PYG{o}{=} \PYG{n}{cv2}\PYG{o}{.}\PYG{n}{bilateralFilter}\PYG{p}{(}\PYG{n}{depth\PYGZus{}colored}\PYG{p}{,} \PYG{l+m+mi}{7}\PYG{p}{,} \PYG{l+m+mi}{75}\PYG{p}{,} \PYG{l+m+mi}{75}\PYG{p}{)}
+\PYG{n}{c5}  \PYG{o}{=} \PYG{n}{cv2}\PYG{o}{.}\PYG{n}{bilateralFilter}\PYG{p}{(}\PYG{n}{depth\PYGZus{}colored}\PYG{p}{,} \PYG{l+m+mi}{9}\PYG{p}{,} \PYG{l+m+mi}{75}\PYG{p}{,} \PYG{l+m+mi}{75}\PYG{p}{)}
+\PYG{n}{c6}  \PYG{o}{=} \PYG{n}{cv2}\PYG{o}{.}\PYG{n}{bilateralFilter}\PYG{p}{(}\PYG{n}{depth\PYGZus{}colored}\PYG{p}{,} \PYG{l+m+mi}{11}\PYG{p}{,} \PYG{l+m+mi}{75}\PYG{p}{,} \PYG{l+m+mi}{75}\PYG{p}{)}
+\PYG{n}{c7}  \PYG{o}{=} \PYG{n}{cv2}\PYG{o}{.}\PYG{n}{bilateralFilter}\PYG{p}{(}\PYG{n}{depth\PYGZus{}colored}\PYG{p}{,} \PYG{l+m+mi}{13}\PYG{p}{,} \PYG{l+m+mi}{75}\PYG{p}{,} \PYG{l+m+mi}{75}\PYG{p}{)}
+\PYG{n}{c8}  \PYG{o}{=} \PYG{n}{cv2}\PYG{o}{.}\PYG{n}{bilateralFilter}\PYG{p}{(}\PYG{n}{depth\PYGZus{}colored}\PYG{p}{,} \PYG{l+m+mi}{15}\PYG{p}{,} \PYG{l+m+mi}{75}\PYG{p}{,} \PYG{l+m+mi}{75}\PYG{p}{)}
+\PYG{n}{c9}  \PYG{o}{=} \PYG{n}{cv2}\PYG{o}{.}\PYG{n}{bilateralFilter}\PYG{p}{(}\PYG{n}{depth\PYGZus{}colored}\PYG{p}{,} \PYG{l+m+mi}{17}\PYG{p}{,} \PYG{l+m+mi}{75}\PYG{p}{,} \PYG{l+m+mi}{75}\PYG{p}{)}
+\PYG{n}{c10} \PYG{o}{=} \PYG{n}{cv2}\PYG{o}{.}\PYG{n}{bilateralFilter}\PYG{p}{(}\PYG{n}{depth\PYGZus{}colored}\PYG{p}{,} \PYG{l+m+mi}{19}\PYG{p}{,} \PYG{l+m+mi}{75}\PYG{p}{,} \PYG{l+m+mi}{75}\PYG{p}{)}
+\PYG{n}{c11} \PYG{o}{=} \PYG{n}{cv2}\PYG{o}{.}\PYG{n}{bilateralFilter}\PYG{p}{(}\PYG{n}{depth\PYGZus{}colored}\PYG{p}{,} \PYG{l+m+mi}{21}\PYG{p}{,} \PYG{l+m+mi}{75}\PYG{p}{,} \PYG{l+m+mi}{75}\PYG{p}{)}
+\PYG{n}{c12} \PYG{o}{=} \PYG{n}{cv2}\PYG{o}{.}\PYG{n}{bilateralFilter}\PYG{p}{(}\PYG{n}{depth\PYGZus{}colored}\PYG{p}{,} \PYG{l+m+mi}{23}\PYG{p}{,} \PYG{l+m+mi}{75}\PYG{p}{,} \PYG{l+m+mi}{75}\PYG{p}{)}
+\PYG{n}{c13} \PYG{o}{=} \PYG{n}{cv2}\PYG{o}{.}\PYG{n}{bilateralFilter}\PYG{p}{(}\PYG{n}{depth\PYGZus{}colored}\PYG{p}{,} \PYG{l+m+mi}{25}\PYG{p}{,} \PYG{l+m+mi}{75}\PYG{p}{,} \PYG{l+m+mi}{75}\PYG{p}{)}
+\PYG{n}{c14} \PYG{o}{=} \PYG{n}{cv2}\PYG{o}{.}\PYG{n}{bilateralFilter}\PYG{p}{(}\PYG{n}{depth\PYGZus{}colored}\PYG{p}{,} \PYG{l+m+mi}{27}\PYG{p}{,} \PYG{l+m+mi}{75}\PYG{p}{,} \PYG{l+m+mi}{75}\PYG{p}{)}
+\PYG{n}{c15} \PYG{o}{=} \PYG{n}{cv2}\PYG{o}{.}\PYG{n}{bilateralFilter}\PYG{p}{(}\PYG{n}{depth\PYGZus{}colored}\PYG{p}{,} \PYG{l+m+mi}{29}\PYG{p}{,} \PYG{l+m+mi}{75}\PYG{p}{,} \PYG{l+m+mi}{75}\PYG{p}{)}
+\PYG{n}{c16} \PYG{o}{=} \PYG{n}{cv2}\PYG{o}{.}\PYG{n}{bilateralFilter}\PYG{p}{(}\PYG{n}{depth\PYGZus{}colored}\PYG{p}{,} \PYG{l+m+mi}{31}\PYG{p}{,} \PYG{l+m+mi}{75}\PYG{p}{,} \PYG{l+m+mi}{75}\PYG{p}{)}
+\PYG{n}{c17} \PYG{o}{=} \PYG{n}{cv2}\PYG{o}{.}\PYG{n}{bilateralFilter}\PYG{p}{(}\PYG{n}{depth\PYGZus{}colored}\PYG{p}{,} \PYG{l+m+mi}{33}\PYG{p}{,} \PYG{l+m+mi}{75}\PYG{p}{,} \PYG{l+m+mi}{75}\PYG{p}{)}
+\PYG{n}{c18} \PYG{o}{=} \PYG{n}{cv2}\PYG{o}{.}\PYG{n}{bilateralFilter}\PYG{p}{(}\PYG{n}{depth\PYGZus{}colored}\PYG{p}{,} \PYG{l+m+mi}{35}\PYG{p}{,} \PYG{l+m+mi}{75}\PYG{p}{,} \PYG{l+m+mi}{75}\PYG{p}{)}
+\PYG{n}{c19} \PYG{o}{=} \PYG{n}{cv2}\PYG{o}{.}\PYG{n}{bilateralFilter}\PYG{p}{(}\PYG{n}{depth\PYGZus{}colored}\PYG{p}{,} \PYG{l+m+mi}{37}\PYG{p}{,} \PYG{l+m+mi}{75}\PYG{p}{,} \PYG{l+m+mi}{75}\PYG{p}{)}
+\PYG{n}{c20} \PYG{o}{=} \PYG{n}{cv2}\PYG{o}{.}\PYG{n}{bilateralFilter}\PYG{p}{(}\PYG{n}{depth\PYGZus{}colored}\PYG{p}{,} \PYG{l+m+mi}{39}\PYG{p}{,} \PYG{l+m+mi}{75}\PYG{p}{,} \PYG{l+m+mi}{75}\PYG{p}{)}
+\PYG{n}{c21} \PYG{o}{=} \PYG{n}{cv2}\PYG{o}{.}\PYG{n}{bilateralFilter}\PYG{p}{(}\PYG{n}{depth\PYGZus{}colored}\PYG{p}{,} \PYG{l+m+mi}{41}\PYG{p}{,} \PYG{l+m+mi}{75}\PYG{p}{,} \PYG{l+m+mi}{75}\PYG{p}{)}
+
+\PYG{n}{row1c} \PYG{o}{=} \PYG{n}{np}\PYG{o}{.}\PYG{n}{hstack}\PYG{p}{([}\PYG{n}{c1}\PYG{p}{,} \PYG{n}{c2}\PYG{p}{,} \PYG{n}{c3}\PYG{p}{])}
+\PYG{n}{row2c} \PYG{o}{=} \PYG{n}{np}\PYG{o}{.}\PYG{n}{hstack}\PYG{p}{([}\PYG{n}{c4}\PYG{p}{,} \PYG{n}{c5}\PYG{p}{,} \PYG{n}{c6}\PYG{p}{])}
+\PYG{n}{row3c} \PYG{o}{=} \PYG{n}{np}\PYG{o}{.}\PYG{n}{hstack}\PYG{p}{([}\PYG{n}{c7}\PYG{p}{,} \PYG{n}{c8}\PYG{p}{,} \PYG{n}{c9}\PYG{p}{])}
+\PYG{n}{row4c} \PYG{o}{=} \PYG{n}{np}\PYG{o}{.}\PYG{n}{hstack}\PYG{p}{([}\PYG{n}{c10}\PYG{p}{,} \PYG{n}{c11}\PYG{p}{,} \PYG{n}{c12}\PYG{p}{])}
+\PYG{n}{row5c} \PYG{o}{=} \PYG{n}{np}\PYG{o}{.}\PYG{n}{hstack}\PYG{p}{([}\PYG{n}{c13}\PYG{p}{,} \PYG{n}{c14}\PYG{p}{,} \PYG{n}{c15}\PYG{p}{])}
+\PYG{n}{row6c} \PYG{o}{=} \PYG{n}{np}\PYG{o}{.}\PYG{n}{hstack}\PYG{p}{([}\PYG{n}{c16}\PYG{p}{,} \PYG{n}{c17}\PYG{p}{,} \PYG{n}{c18}\PYG{p}{])}
+\PYG{n}{row7c} \PYG{o}{=} \PYG{n}{np}\PYG{o}{.}\PYG{n}{hstack}\PYG{p}{([}\PYG{n}{c19}\PYG{p}{,} \PYG{n}{c20}\PYG{p}{,} \PYG{n}{c21}\PYG{p}{])}
+
+\PYG{n}{grid\PYGZus{}colored} \PYG{o}{=} \PYG{n}{np}\PYG{o}{.}\PYG{n}{vstack}\PYG{p}{([}\PYG{n}{row1c}\PYG{p}{,} \PYG{n}{row2c}\PYG{p}{,} \PYG{n}{row3c}\PYG{p}{,} \PYG{n}{row4c}\PYG{p}{,} \PYG{n}{row5c}\PYG{p}{,} \PYG{n}{row6c}\PYG{p}{,} \PYG{n}{row7c}\PYG{p}{])}
+
+\PYG{c+c1}{\PYGZsh{} cv2.imshow(\PYGZdq{}Gray Grid\PYGZdq{}, grid\PYGZus{}gray)}
+\PYG{c+c1}{\PYGZsh{} cv2.imshow(\PYGZdq{}Colored Grid\PYGZdq{}, grid\PYGZus{}colored)}
+
+\PYG{c+c1}{\PYGZsh{} while True:}
+\PYG{c+c1}{\PYGZsh{}     key = cv2.waitKey(1) \PYGZam{} 0xFF}
+\PYG{c+c1}{\PYGZsh{}     if key in (ord(\PYGZsq{}1\PYGZsq{}), 27):  \PYGZsh{} press \PYGZsq{}1\PYGZsq{} or ESC}
+\PYG{c+c1}{\PYGZsh{}         break}
+
+\PYG{c+c1}{\PYGZsh{} cv2.destroyAllWindows()}
+
+\PYG{c+c1}{\PYGZsh{} save each grid separately}
+\PYG{n}{cv2}\PYG{o}{.}\PYG{n}{imwrite}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}images/blur/07\PYGZus{}bilateral\PYGZus{}gray\PYGZus{}grid.png\PYGZdq{}}\PYG{p}{,} \PYG{n}{grid\PYGZus{}gray}\PYG{p}{)}
+\PYG{n}{cv2}\PYG{o}{.}\PYG{n}{imwrite}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}images/blur/07\PYGZus{}bilateral\PYGZus{}colored\PYGZus{}grid.png\PYGZdq{}}\PYG{p}{,} \PYG{n}{grid\PYGZus{}colored}\PYG{p}{)}
+\end{Verbatim}
