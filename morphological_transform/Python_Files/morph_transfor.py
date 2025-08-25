@@ -50,6 +50,8 @@ to_save = {
     "closing.png":  closing,
     "gradient.png": mg,
     "tophat.png":   th,
+    "image.png": img,
+    "global_mask.png": mask
 }
 for name, arr in to_save.items():
     cv2.imwrite(str(OUT_DIR / name), arr)

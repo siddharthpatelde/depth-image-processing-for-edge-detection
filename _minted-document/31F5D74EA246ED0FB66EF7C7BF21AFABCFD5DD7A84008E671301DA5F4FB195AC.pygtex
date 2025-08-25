@@ -1,0 +1,76 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{k+kn}{import}\PYG{+w}{ }\PYG{n+nn}{cv2}
+\PYG{k+kn}{import}\PYG{+w}{ }\PYG{n+nn}{numpy}\PYG{+w}{ }\PYG{k}{as}\PYG{+w}{ }\PYG{n+nn}{np}
+\PYG{k+kn}{from}\PYG{+w}{ }\PYG{n+nn}{matplotlib}\PYG{+w}{ }\PYG{k+kn}{import} \PYG{n}{pyplot} \PYG{k}{as} \PYG{n}{plt}
+\PYG{k+kn}{from}\PYG{+w}{ }\PYG{n+nn}{pathlib}\PYG{+w}{ }\PYG{k+kn}{import} \PYG{n}{Path}
+
+\PYG{c+c1}{\PYGZsh{} \PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{} paths (repo\PYGZhy{}root aware) \PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}}
+\PYG{n}{ROOT} \PYG{o}{=} \PYG{n}{Path}\PYG{p}{(}\PYG{n+nv+vm}{\PYGZus{}\PYGZus{}file\PYGZus{}\PYGZus{}}\PYG{p}{)}\PYG{o}{.}\PYG{n}{resolve}\PYG{p}{()}\PYG{o}{.}\PYG{n}{parents}\PYG{p}{[}\PYG{l+m+mi}{2}\PYG{p}{]}          \PYG{c+c1}{\PYGZsh{} .../repo/}
+\PYG{n}{IMG\PYGZus{}PATH} \PYG{o}{=} \PYG{n}{ROOT} \PYG{o}{/} \PYG{l+s+s2}{\PYGZdq{}images\PYGZdq{}} \PYG{o}{/} \PYG{l+s+s2}{\PYGZdq{}test\PYGZhy{}2.jpeg\PYGZdq{}}          \PYG{c+c1}{\PYGZsh{} input image}
+\PYG{n}{OUT\PYGZus{}DIR}  \PYG{o}{=} \PYG{n}{ROOT} \PYG{o}{/} \PYG{l+s+s2}{\PYGZdq{}images\PYGZdq{}} \PYG{o}{/} \PYG{l+s+s2}{\PYGZdq{}morph\PYGZus{}transform\PYGZdq{}}      \PYG{c+c1}{\PYGZsh{} output dir}
+\PYG{n}{OUT\PYGZus{}DIR}\PYG{o}{.}\PYG{n}{mkdir}\PYG{p}{(}\PYG{n}{parents}\PYG{o}{=}\PYG{k+kc}{True}\PYG{p}{,} \PYG{n}{exist\PYGZus{}ok}\PYG{o}{=}\PYG{k+kc}{True}\PYG{p}{)}
+
+\PYG{c+c1}{\PYGZsh{} \PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{} load \PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}}
+\PYG{n}{img} \PYG{o}{=} \PYG{n}{cv2}\PYG{o}{.}\PYG{n}{imread}\PYG{p}{(}\PYG{n+nb}{str}\PYG{p}{(}\PYG{n}{IMG\PYGZus{}PATH}\PYG{p}{),} \PYG{n}{cv2}\PYG{o}{.}\PYG{n}{IMREAD\PYGZus{}GRAYSCALE}\PYG{p}{)}
+\PYG{k}{if} \PYG{n}{img} \PYG{o+ow}{is} \PYG{k+kc}{None}\PYG{p}{:}
+    \PYG{k}{raise} \PYG{n+ne}{FileNotFoundError}\PYG{p}{(}\PYG{l+s+sa}{f}\PYG{l+s+s2}{\PYGZdq{}Could not load image: }\PYG{l+s+si}{\PYGZob{}}\PYG{n}{IMG\PYGZus{}PATH}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{)}
+
+\PYG{c+c1}{\PYGZsh{} \PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{} thresholding \PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}}
+\PYG{c+c1}{\PYGZsh{} fixed/global threshold (your original)}
+\PYG{n}{\PYGZus{}}\PYG{p}{,} \PYG{n}{mask} \PYG{o}{=} \PYG{n}{cv2}\PYG{o}{.}\PYG{n}{threshold}\PYG{p}{(}\PYG{n}{img}\PYG{p}{,} \PYG{l+m+mi}{70}\PYG{p}{,} \PYG{l+m+mi}{255}\PYG{p}{,} \PYG{n}{cv2}\PYG{o}{.}\PYG{n}{THRESH\PYGZus{}BINARY}\PYG{p}{)}
+
+\PYG{c+c1}{\PYGZsh{} adaptive thresholds (tweak blockSize \PYGZam{} C as needed; blockSize must be odd \PYGZgt{}= 3)}
+\PYG{n}{blockSize} \PYG{o}{=} \PYG{l+m+mi}{3}
+\PYG{n}{C} \PYG{o}{=} \PYG{l+m+mi}{35}
+
+
+\PYG{n}{mask\PYGZus{}mean} \PYG{o}{=} \PYG{n}{cv2}\PYG{o}{.}\PYG{n}{adaptiveThreshold}\PYG{p}{(}
+    \PYG{n}{img}\PYG{p}{,} \PYG{l+m+mi}{255}\PYG{p}{,} \PYG{n}{cv2}\PYG{o}{.}\PYG{n}{ADAPTIVE\PYGZus{}THRESH\PYGZus{}MEAN\PYGZus{}C}\PYG{p}{,} \PYG{n}{cv2}\PYG{o}{.}\PYG{n}{THRESH\PYGZus{}BINARY}\PYG{p}{,} \PYG{n}{blockSize}\PYG{p}{,} \PYG{n}{C}
+\PYG{p}{)}
+
+\PYG{n}{mask\PYGZus{}gauss} \PYG{o}{=} \PYG{n}{cv2}\PYG{o}{.}\PYG{n}{adaptiveThreshold}\PYG{p}{(}
+    \PYG{n}{img}\PYG{p}{,} \PYG{l+m+mi}{255}\PYG{p}{,} \PYG{n}{cv2}\PYG{o}{.}\PYG{n}{ADAPTIVE\PYGZus{}THRESH\PYGZus{}GAUSSIAN\PYGZus{}C}\PYG{p}{,} \PYG{n}{cv2}\PYG{o}{.}\PYG{n}{THRESH\PYGZus{}BINARY}\PYG{p}{,} \PYG{n}{blockSize}\PYG{p}{,} \PYG{n}{C}
+\PYG{p}{)}
+
+\PYG{c+c1}{\PYGZsh{} \PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{} morphology on the (fixed) mask (unchanged) \PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}}
+\PYG{n}{kernel} \PYG{o}{=} \PYG{n}{np}\PYG{o}{.}\PYG{n}{ones}\PYG{p}{((}\PYG{l+m+mi}{5}\PYG{p}{,} \PYG{l+m+mi}{5}\PYG{p}{),} \PYG{n}{np}\PYG{o}{.}\PYG{n}{uint8}\PYG{p}{)}
+\PYG{n}{dilation} \PYG{o}{=} \PYG{n}{cv2}\PYG{o}{.}\PYG{n}{dilate}\PYG{p}{(}\PYG{n}{mask}\PYG{p}{,} \PYG{n}{kernel}\PYG{p}{,} \PYG{n}{iterations}\PYG{o}{=}\PYG{l+m+mi}{1}\PYG{p}{)}
+\PYG{n}{erosion}  \PYG{o}{=} \PYG{n}{cv2}\PYG{o}{.}\PYG{n}{erode}\PYG{p}{(}\PYG{n}{mask}\PYG{p}{,} \PYG{n}{kernel}\PYG{p}{,} \PYG{n}{iterations}\PYG{o}{=}\PYG{l+m+mi}{3}\PYG{p}{)}
+\PYG{n}{opening}  \PYG{o}{=} \PYG{n}{cv2}\PYG{o}{.}\PYG{n}{morphologyEx}\PYG{p}{(}\PYG{n}{mask}\PYG{p}{,} \PYG{n}{cv2}\PYG{o}{.}\PYG{n}{MORPH\PYGZus{}OPEN}\PYG{p}{,} \PYG{n}{kernel}\PYG{p}{)}
+\PYG{n}{closing}  \PYG{o}{=} \PYG{n}{cv2}\PYG{o}{.}\PYG{n}{morphologyEx}\PYG{p}{(}\PYG{n}{mask}\PYG{p}{,} \PYG{n}{cv2}\PYG{o}{.}\PYG{n}{MORPH\PYGZus{}CLOSE}\PYG{p}{,} \PYG{n}{kernel}\PYG{p}{)}
+\PYG{n}{mg}       \PYG{o}{=} \PYG{n}{cv2}\PYG{o}{.}\PYG{n}{morphologyEx}\PYG{p}{(}\PYG{n}{mask}\PYG{p}{,} \PYG{n}{cv2}\PYG{o}{.}\PYG{n}{MORPH\PYGZus{}GRADIENT}\PYG{p}{,} \PYG{n}{kernel}\PYG{p}{)}
+\PYG{n}{th}       \PYG{o}{=} \PYG{n}{cv2}\PYG{o}{.}\PYG{n}{morphologyEx}\PYG{p}{(}\PYG{n}{mask}\PYG{p}{,} \PYG{n}{cv2}\PYG{o}{.}\PYG{n}{MORPH\PYGZus{}TOPHAT}\PYG{p}{,} \PYG{n}{kernel}\PYG{p}{)}
+
+\PYG{c+c1}{\PYGZsh{} \PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{} save outputs \PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}}
+\PYG{n}{to\PYGZus{}save} \PYG{o}{=} \PYG{p}{\PYGZob{}}
+    \PYG{l+s+s2}{\PYGZdq{}adaptive\PYGZus{}mean.png\PYGZdq{}}\PYG{p}{:}   \PYG{n}{mask\PYGZus{}mean}\PYG{p}{,}
+    \PYG{l+s+s2}{\PYGZdq{}adaptive\PYGZus{}gaussian.png\PYGZdq{}}\PYG{p}{:} \PYG{n}{mask\PYGZus{}gauss}\PYG{p}{,}
+    \PYG{l+s+s2}{\PYGZdq{}dilation.png\PYGZdq{}}\PYG{p}{:} \PYG{n}{dilation}\PYG{p}{,}
+    \PYG{l+s+s2}{\PYGZdq{}erosion.png\PYGZdq{}}\PYG{p}{:}  \PYG{n}{erosion}\PYG{p}{,}
+    \PYG{l+s+s2}{\PYGZdq{}opening.png\PYGZdq{}}\PYG{p}{:}  \PYG{n}{opening}\PYG{p}{,}
+    \PYG{l+s+s2}{\PYGZdq{}closing.png\PYGZdq{}}\PYG{p}{:}  \PYG{n}{closing}\PYG{p}{,}
+    \PYG{l+s+s2}{\PYGZdq{}gradient.png\PYGZdq{}}\PYG{p}{:} \PYG{n}{mg}\PYG{p}{,}
+    \PYG{l+s+s2}{\PYGZdq{}tophat.png\PYGZdq{}}\PYG{p}{:}   \PYG{n}{th}\PYG{p}{,}
+    \PYG{l+s+s2}{\PYGZdq{}image.png\PYGZdq{}}\PYG{p}{:} \PYG{n}{img}\PYG{p}{,}
+    \PYG{l+s+s2}{\PYGZdq{}global\PYGZus{}mask.png\PYGZdq{}}\PYG{p}{:} \PYG{n}{mask}
+\PYG{p}{\PYGZcb{}}
+\PYG{k}{for} \PYG{n}{name}\PYG{p}{,} \PYG{n}{arr} \PYG{o+ow}{in} \PYG{n}{to\PYGZus{}save}\PYG{o}{.}\PYG{n}{items}\PYG{p}{():}
+    \PYG{n}{cv2}\PYG{o}{.}\PYG{n}{imwrite}\PYG{p}{(}\PYG{n+nb}{str}\PYG{p}{(}\PYG{n}{OUT\PYGZus{}DIR} \PYG{o}{/} \PYG{n}{name}\PYG{p}{),} \PYG{n}{arr}\PYG{p}{)}
+
+\PYG{c+c1}{\PYGZsh{} \PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{} show (2 x 5 grid) \PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}}
+\PYG{n}{titles} \PYG{o}{=} \PYG{p}{[}
+    \PYG{l+s+s1}{\PYGZsq{}image\PYGZsq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}global mask\PYGZsq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}adaptive mean\PYGZsq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}adaptive gaussian\PYGZsq{}}\PYG{p}{,}
+    \PYG{l+s+s1}{\PYGZsq{}dilation\PYGZsq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}erosion\PYGZsq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}opening\PYGZsq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}closing\PYGZsq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}gradient\PYGZsq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}tophat\PYGZsq{}}
+\PYG{p}{]}
+\PYG{n}{images} \PYG{o}{=} \PYG{p}{[}\PYG{n}{img}\PYG{p}{,} \PYG{n}{mask}\PYG{p}{,} \PYG{n}{mask\PYGZus{}mean}\PYG{p}{,} \PYG{n}{mask\PYGZus{}gauss}\PYG{p}{,} \PYG{n}{dilation}\PYG{p}{,} \PYG{n}{erosion}\PYG{p}{,} \PYG{n}{opening}\PYG{p}{,} \PYG{n}{closing}\PYG{p}{,} \PYG{n}{mg}\PYG{p}{,} \PYG{n}{th}\PYG{p}{]}
+
+\PYG{n}{plt}\PYG{o}{.}\PYG{n}{figure}\PYG{p}{(}\PYG{n}{figsize}\PYG{o}{=}\PYG{p}{(}\PYG{l+m+mi}{12}\PYG{p}{,} \PYG{l+m+mi}{6}\PYG{p}{))}
+\PYG{k}{for} \PYG{n}{i} \PYG{o+ow}{in} \PYG{n+nb}{range}\PYG{p}{(}\PYG{n+nb}{len}\PYG{p}{(}\PYG{n}{images}\PYG{p}{)):}
+    \PYG{n}{plt}\PYG{o}{.}\PYG{n}{subplot}\PYG{p}{(}\PYG{l+m+mi}{2}\PYG{p}{,} \PYG{l+m+mi}{5}\PYG{p}{,} \PYG{n}{i} \PYG{o}{+} \PYG{l+m+mi}{1}\PYG{p}{)}
+    \PYG{n}{plt}\PYG{o}{.}\PYG{n}{imshow}\PYG{p}{(}\PYG{n}{images}\PYG{p}{[}\PYG{n}{i}\PYG{p}{],} \PYG{l+s+s1}{\PYGZsq{}gray\PYGZsq{}}\PYG{p}{)}
+    \PYG{n}{plt}\PYG{o}{.}\PYG{n}{title}\PYG{p}{(}\PYG{n}{titles}\PYG{p}{[}\PYG{n}{i}\PYG{p}{],} \PYG{n}{fontsize}\PYG{o}{=}\PYG{l+m+mi}{9}\PYG{p}{)}
+    \PYG{n}{plt}\PYG{o}{.}\PYG{n}{xticks}\PYG{p}{([]);} \PYG{n}{plt}\PYG{o}{.}\PYG{n}{yticks}\PYG{p}{([])}
+
+\PYG{n}{plt}\PYG{o}{.}\PYG{n}{tight\PYGZus{}layout}\PYG{p}{()}
+\PYG{n}{plt}\PYG{o}{.}\PYG{n}{show}\PYG{p}{()}
+\end{Verbatim}

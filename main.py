@@ -8,7 +8,8 @@ SCRIPTS = [
     "Python_Files/05_gauss_blur.py",
     "Python_Files/06_median_blur.py",
     "Python_Files/07_bilateral_blur.py",
-    "Python_Files/08_canny_on_blur.py"
+    "Python_Files/08_canny_on_blur.py",
+    "morphological_transform/Python_Files/morph_transfor.py"
 ]
 
 # name of your LaTeX file
